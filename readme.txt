@@ -4,5 +4,5 @@ myuv is free software distributed under GPL.
 
 myuv has mutiplatform surpport.
 
-myuv use c.
+myuv use c.language.
 
