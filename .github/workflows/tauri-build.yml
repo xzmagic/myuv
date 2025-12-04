@@ -40,10 +40,14 @@ jobs:
         with:
           projectPath: src-tauri
           bundles: all
-          args: --ci
+          args: --ci --bundles all --verbose
 
       - name: List build outputs
         run: ls -R src-tauri/target || true
+
+      - name: Show bundle files (debug)
+        run: |
+          find src-tauri/target -maxdepth 5 -type f | grep bundle || true
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
