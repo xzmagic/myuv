@@ -71,7 +71,14 @@ jobs:
       - name: Flatten artifacts
         run: |
           mkdir -p upload
-          find release-assets -type f -maxdepth 5 -print -exec bash -c 'cp "$0" "upload/$(basename "$0")"' {} \;
+          find release-assets -type f -maxdepth 5 \
+            \( -name 'rag-app_*_amd64.deb' \
+            -o -name 'rag-app_*_amd64.AppImage' \
+            -o -name 'rag-app_*_x64-setup.exe' \
+            -o -name 'rag-app_*_x64_en-US.msi' \
+            -o -name 'rag-app_*_aarch64.dmg' \
+            -o -name 'rag-app_*_x86_64.rpm' \) \
+            -print -exec bash -c 'cp "$0" "upload/$(basename "$0")"' {} \;
           ls -l upload
 
       - name: Publish GitHub Release assets
