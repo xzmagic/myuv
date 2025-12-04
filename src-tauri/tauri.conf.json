@@ -25,5 +25,30 @@
     "security": {
       "csp": null
     }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "app",
+      "dmg",
+      "msi",
+      "nsis",
+      "appimage",
+      "deb",
+      "rpm"
+    ],
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    },
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": null,
+      "signingIdentity": null
+    },
+    "windows": {
+      "timestampUrl": null
+    }
   }
 }
