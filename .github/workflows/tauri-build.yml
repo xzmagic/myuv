@@ -68,9 +68,20 @@ jobs:
       - name: List downloaded assets
         run: ls -R release-assets
 
+      - name: Flatten artifacts
+        run: |
+          mkdir -p upload
+          find release-assets -type f -maxdepth 5 -print -exec bash -c 'cp "$0" "upload/$(basename "$0")"' {} \;
+          ls -l upload
+
       - name: Publish GitHub Release assets
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          files: release-assets/**
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          artifacts: upload/**
+          allowUpdates: true
+          replacesArtifacts: true
+          artifactErrorsFailBuild: false
+          generateReleaseNotes: true
