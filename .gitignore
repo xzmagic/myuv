@@ -1,0 +1,4 @@
+src-tauri/target/
+src-tauri/.tauri/
+src-tauri/gen/
+*.log
