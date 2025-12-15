@@ -25,8 +25,8 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow: auto; /* 允许页面整体滚动，避免内层滚动条 */
         }
 
         /* Dark theme overrides */
@@ -134,7 +134,7 @@ body.dark .project-progress .progress-track { background: #1f2937; }
         .doc-header,
         .doc-row {
             display: grid;
-            grid-template-columns: 40px 1.6fr 170px 110px;
+            grid-template-columns: 40px 1.6fr 110px 180px 170px 110px;
             align-items: center;
             padding: 8px 6px;
         }
@@ -158,6 +158,58 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             font-size: 0.9em;
         }
         body.dark .doc-name, body.dark .doc-time { color: #cbd5e1; }
+
+        /* 文件状态与进度（汇编过程可视化） */
+        .doc-status {
+            display: flex;
+            align-items: center;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+        .status-waiting { background: rgba(113,128,150,0.10); color: #4a5568; border-color: rgba(113,128,150,0.25); }
+        .status-processing { background: rgba(66,153,225,0.10); color: #2b6cb0; border-color: rgba(66,153,225,0.25); }
+        .status-completed { background: rgba(72,187,120,0.10); color: #276749; border-color: rgba(72,187,120,0.25); }
+        .status-failed { background: rgba(245,101,101,0.10); color: #c53030; border-color: rgba(245,101,101,0.25); }
+        body.dark .status-waiting { background: rgba(203,213,225,0.10); color: #cbd5e1; border-color: rgba(203,213,225,0.25); }
+        body.dark .status-processing { background: rgba(99,179,237,0.12); color: #90cdf4; border-color: rgba(99,179,237,0.22); }
+        body.dark .status-completed { background: rgba(72,187,120,0.12); color: #9ae6b4; border-color: rgba(72,187,120,0.22); }
+        body.dark .status-failed { background: rgba(245,101,101,0.12); color: #feb2b2; border-color: rgba(245,101,101,0.22); }
+
+        .doc-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .file-progress-track {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        body.dark .file-progress-track { background: #1f2937; }
+        .file-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4299e1, #48bb78);
+            transition: width 0.25s ease;
+        }
+        .file-progress-text {
+            width: 40px;
+            text-align: right;
+            font-size: 12px;
+            color: #718096;
+        }
+        body.dark .file-progress-text { color: #cbd5e1; }
         body.dark #doc-list-container {
             background: #0c1b2f !important;
             border-color: #243447 !important;
@@ -633,6 +685,10 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             border: 1px solid #edf2f7;
             font-size: 0.9em;
         }
+        body.dark .source-docs {
+            background: #0f1b2b;
+            border: 1px solid #243447;
+        }
         .source-docs-title {
             font-weight: 600;
             color: #4a5568;
@@ -641,13 +697,26 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             align-items: center;
             gap: 5px;
         }
+        body.dark .source-docs-title {
+            color: #e0e7ff;
+        }
         .source-item {
             display: flex;
             gap: 8px;
             margin-bottom: 5px;
             color: #666;
+            line-height: 1.5;
         }
-        .source-icon { color: var(--accent-color); }
+        body.dark .source-item {
+            color: #94a3b8;
+        }
+        .source-icon { 
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        body.dark .source-icon {
+            color: #60a5fa;
+        }
 
         /* Assembly Result Pretty Print */
         .json-key { color: #e53e3e; font-weight: bold; }
@@ -764,7 +833,7 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                         <input type="text" id="project-search" placeholder="搜索项目名称，匹配项置顶" style="flex:1; min-width: 240px; max-width: 320px; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px;" oninput="applyProjectSearch()">
                         <button class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.9em;" onclick="applyProjectSearch()">🔍 搜索</button>
                     </div>
-                    <div style="max-height: 420px; overflow-y: auto; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; background: #f9fafb;" id="doc-list-container">
+                    <div style="border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; background: #f9fafb;" id="doc-list-container">
                         <p style="text-align: center; color: #999;">加载中...</p>
                     </div>
                     <div id="pagination-container" style="margin-top: 10px;"></div>
@@ -1416,19 +1485,164 @@ body.dark .project-progress .progress-track { background: #1f2937; }
         let SELECTED_DOCS = new Set();
         let PROJECT_GROUPS = {};
         const PROJECT_TOP_K = 5;
-        let ASSEMBLY_ACTION = '项目档案';
-        const PAGE_SIZE = 50;
+        let ASSEMBLY_ACTION = '研究档案';
+        const PAGE_SIZE = 12; // 控制每页项目数，便于抽屉展示
         let CURRENT_PAGE = 1;
         const PROJECT_ASSEMBLY_STATE = {}; // projectKey -> { status, progress, taskId, error, queue_position }
         const ASSEMBLY_POLLERS = {}; // taskId -> intervalId
         const PROJECT_STATUS_LABELS = {
-            pending: '等待开始',
             queued: '排队中',
             running: '处理中',
             completed: '已完成',
-            failed: '处理失败'
+            failed: '处理失败',
+            cancelled: '已取消',
+            timeout: '超时'
         };
         let MSG_COUNTER = 0;
+
+        // 文件级进度展示（确认与后端一致：waiting/processing/completed/failed）
+        const FILE_STATUS_LABELS = {
+            waiting: '等待中',
+            processing: '处理中',
+            completed: '已完成',
+            failed: '失败'
+        };
+        // 复用 tasks.vue 的 SSE 协议：连接 /tasks/stream 后按 task_id 过滤
+        let TASKS_STREAM_SOURCE = null;
+        const TASKS_STREAM_SUBS = {}; // taskId -> projectName
+
+        function toJsonUrl(filePath) {
+            try {
+                const raw = decodeURIComponent(String(filePath || ''));
+                const noQuery = raw.split('?')[0].split('#')[0];
+                if (noQuery.toLowerCase().endsWith('.json')) return noQuery;
+                const idx = noQuery.lastIndexOf('.');
+                if (idx > -1) return noQuery.slice(0, idx) + '.json';
+                return noQuery + '.json';
+            } catch (e) {
+                const s = String(filePath || '');
+                if (s.toLowerCase().endsWith('.json')) return s;
+                const idx = s.lastIndexOf('.');
+                if (idx > -1) return s.slice(0, idx) + '.json';
+                return s + '.json';
+            }
+        }
+
+        function getFileBadgeClass(status) {
+            switch (status) {
+                case 'processing': return 'status-processing';
+                case 'completed': return 'status-completed';
+                case 'failed': return 'status-failed';
+                case 'waiting':
+                default: return 'status-waiting';
+            }
+        }
+
+        function renderFileStatusBadge(status) {
+            const s = status || 'waiting';
+            const text = FILE_STATUS_LABELS[s] || s;
+            const cls = getFileBadgeClass(s);
+            return `<span class="status-badge ${cls}">${text}</span>`;
+        }
+
+        function updateDocProgressRow(docId, fp) {
+            const statusEl = document.getElementById(`doc-status-${docId}`);
+            const fillEl = document.getElementById(`doc-progress-fill-${docId}`);
+            const textEl = document.getElementById(`doc-progress-text-${docId}`);
+            if (!statusEl || !fillEl || !textEl) return;
+            const status = (fp && fp.status) ? fp.status : 'waiting';
+            const progress = Math.min(100, Math.max(0, Number(fp && fp.progress) || 0));
+            statusEl.innerHTML = renderFileStatusBadge(status);
+            fillEl.style.width = `${progress}%`;
+            textEl.textContent = `${progress}%`;
+        }
+
+        function refreshProjectFileProgress(projectName) {
+            const key = getProjectKey(projectName);
+            const state = PROJECT_ASSEMBLY_STATE[key] || {};
+            const fpMap = state.file_progress || {};
+            const selected = new Set(state.selected_urls || []);
+
+            Object.entries(PROJECT_GROUPS).forEach(([pid, group]) => {
+                if (getProjectKey(group.name) !== key) return;
+                group.docs.forEach(doc => {
+                    const inTask = selected.size ? selected.has(doc.file_path) : true;
+                    if (!inTask) {
+                        updateDocProgressRow(doc.id, { status: 'waiting', progress: 0 });
+                        return;
+                    }
+                    const jsonUrl = toJsonUrl(doc.file_path);
+                    const fp = fpMap[jsonUrl] || { status: 'waiting', progress: 0 };
+                    updateDocProgressRow(doc.id, fp);
+                });
+            });
+        }
+
+        function ensureTasksStreamConnected() {
+            if (TASKS_STREAM_SOURCE) return;
+            const token = CURRENT_TOKEN || localStorage.getItem('jwt_token');
+            const url = buildUrl(`/tasks/stream?token=${encodeURIComponent(token || '')}`);
+            const es = new EventSource(url);
+            TASKS_STREAM_SOURCE = es;
+
+            es.onmessage = function (event) {
+                try {
+                    const payload = JSON.parse(event.data || '{}');
+                    if (payload.error) return;
+                    const tasks = Array.isArray(payload.tasks) ? payload.tasks : [];
+                    if (!tasks.length) return;
+
+                    // 构建索引，加速查找
+                    const byId = {};
+                    tasks.forEach(t => { if (t && t.task_id) byId[t.task_id] = t; });
+
+                    Object.entries(TASKS_STREAM_SUBS).forEach(([taskId, projectName]) => {
+                        const t = byId[taskId];
+                        if (!t) return;
+
+                        const status = t.status || 'running';
+                        const progress = status === 'completed' ? 100 : (typeof t.progress === 'number' ? t.progress : 0);
+                        updateProjectAssemblyState(projectName, {
+                            status,
+                            progress,
+                            taskId,
+                            error: t.error || null,
+                            queue_position: t.queue_position ?? -1,
+                            estimated_wait: t.estimated_wait ?? 0,
+                            file_progress: t.file_progress || {},
+                            agent_progress: t.agent_progress || {}
+                        });
+                        refreshAssemblyUIForProject(projectName);
+                        refreshProjectFileProgress(projectName);
+
+                        if (status === 'completed') {
+                            showToast('汇编完成', 'success');
+                            loadMyDocuments();
+                            delete TASKS_STREAM_SUBS[taskId];
+                        } else if (['failed', 'cancelled', 'timeout'].includes(status)) {
+                            showToast('汇编失败: ' + (t.error || '未知错误'), 'error');
+                            delete TASKS_STREAM_SUBS[taskId];
+                        }
+                    });
+
+                    // 无订阅时关闭 SSE，减少连接
+                    if (Object.keys(TASKS_STREAM_SUBS).length === 0) {
+                        try { es.close(); } catch (e) {}
+                        TASKS_STREAM_SOURCE = null;
+                    }
+                } catch (e) {
+                    // ignore
+                }
+            };
+
+            es.onerror = function () {
+                // EventSource 会自动重连；若没有订阅则关闭
+                if (Object.keys(TASKS_STREAM_SUBS).length === 0) {
+                    try { es.close(); } catch (e) {}
+                    TASKS_STREAM_SOURCE = null;
+                }
+            };
+        }
 
         function setAssemblyType(val) {
             ASSEMBLY_ACTION = val || '项目档案';
@@ -1461,14 +1675,48 @@ body.dark .project-progress .progress-track { background: #1f2937; }
 
         function renderProjectAssemblyStatus(projectName, pid) {
             const container = document.getElementById(`project-progress-${pid}`);
-            if (!container) return;
             const state = getProjectAssemblyState(projectName);
+            
+            // Update Button State
+            const btn = document.getElementById(`assembly-btn-${pid}`);
+            if (btn) {
+                const status = state ? (state.status || 'running') : 'running';
+                const isCompleted = status === 'completed';
+                btn.textContent = isCompleted ? '重新汇编' : '汇编项目';
+                
+                // Apply optimized styles
+                btn.style.padding = '7px 18px';
+                btn.style.fontSize = '0.85em';
+                btn.style.fontWeight = '600';
+                btn.style.minWidth = '100px';
+                btn.style.borderRadius = '20px';
+                btn.style.border = 'none';
+                btn.style.color = 'white';
+                btn.style.letterSpacing = '0.5px';
+                btn.style.transition = 'all 0.2s';
+
+                if (isCompleted) {
+                    btn.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
+                    btn.style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.3)';
+                } else {
+                    btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                    btn.style.boxShadow = '0 4px 12px rgba(16,185,129,0.3)';
+                }
+            }
+
+            if (!container) return;
             if (!state) {
                 container.style.display = 'none';
                 return;
             }
-            const progressVal = typeof state.progress === 'number' ? Math.min(Math.max(state.progress, 0), 100) : 0;
             const status = state.status || 'running';
+            // 如果已完成，强制显示100%；如果失败，显示0%
+            let progressVal = typeof state.progress === 'number' ? Math.min(Math.max(state.progress, 0), 100) : 0;
+            if (status === 'completed') {
+                progressVal = 100;
+            } else if (status === 'failed') {
+                progressVal = 0;
+            }
             const color = getProgressColor(status);
             const statusText = PROJECT_STATUS_LABELS[status] || '处理中';
             const queueText = Number.isInteger(state.queue_position) && state.queue_position >= 0 && !['completed','failed'].includes(status)
@@ -1504,64 +1752,18 @@ body.dark .project-progress .progress-track { background: #1f2937; }
         }
 
         function stopAssemblyPolling(taskId) {
-            if (ASSEMBLY_POLLERS[taskId]) {
-                clearInterval(ASSEMBLY_POLLERS[taskId]);
-                delete ASSEMBLY_POLLERS[taskId];
+            delete TASKS_STREAM_SUBS[taskId];
+            // 无订阅时关闭 SSE
+            if (TASKS_STREAM_SOURCE && Object.keys(TASKS_STREAM_SUBS).length === 0) {
+                try { TASKS_STREAM_SOURCE.close(); } catch (e) {}
+                TASKS_STREAM_SOURCE = null;
             }
         }
 
         function startAssemblyPolling(projectName, taskId) {
             stopAssemblyPolling(taskId);
-            const poll = async () => {
-                try {
-                    const res = await apiFetch(`/assembly_task/${taskId}`, {
-                        headers: getHeaders()
-                    });
-                    const payload = await res.json().catch(() => ({}));
-                    if (res.status === 401) return forceRelogin('登录已过期，请重新登录');
-                    const codeOk = payload.code === 200 || payload.code === 500;
-                    if (!codeOk) {
-                        throw new Error(payload.msg || '获取进度失败');
-                    }
-                    const data = payload.data || {};
-                    const status = data.status || (payload.code === 500 ? 'failed' : 'running');
-                    const progress = typeof data.progress === 'number' ? data.progress : 0;
-                    const error = data.error || null;
-                    updateProjectAssemblyState(projectName, {
-                        status,
-                        progress,
-                        taskId,
-                        error,
-                        queue_position: data.queue_position
-                    });
-                    refreshAssemblyUIForProject(projectName);
-
-                    if (status === 'completed' || status === 'failed') {
-                        stopAssemblyPolling(taskId);
-                        if (status === 'completed') {
-                            showToast('汇编完成', 'success');
-                            if (data.result) {
-                                document.getElementById('assembly-result-card').style.display = 'block';
-                                document.getElementById('assembly-result').innerHTML = syntaxHighlight(data.result);
-                            }
-                        } else {
-                            showToast('汇编失败: ' + (error || payload.msg || '未知错误'), 'error');
-                        }
-                    }
-                } catch (err) {
-                    stopAssemblyPolling(taskId);
-                    updateProjectAssemblyState(projectName, {
-                        status: 'failed',
-                        progress: 0,
-                        error: err.message,
-                        taskId
-                    });
-                    refreshAssemblyUIForProject(projectName);
-                    showToast('获取进度失败: ' + err.message, 'error');
-                }
-            };
-            poll();
-            ASSEMBLY_POLLERS[taskId] = setInterval(poll, 1500);
+            TASKS_STREAM_SUBS[taskId] = projectName;
+            ensureTasksStreamConnected();
         }
 
         async function loadMyDocuments() {
@@ -1570,14 +1772,34 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             SELECTED_DOCS = new Set();
             
             try {
-                // Using /api/documents/my/documents to fetch user's docs
-                const res = await apiFetch('/api/documents/my/documents', {
-                    headers: getHeaders()
-                });
-                const data = await res.json();
+                // Parallel fetch documents and statuses
+                const [resDocs, resStatus] = await Promise.all([
+                    apiFetch('/api/documents/my/documents', { headers: getHeaders() }),
+                    apiFetch('/api/projects/assembly-status', { headers: getHeaders() })
+                ]);
+
+                // Process Statuses first
+                if (resStatus.ok) {
+                    const dataStatus = await resStatus.json().catch(() => ({}));
+                    if (dataStatus.code === 200 && dataStatus.data) {
+                        Object.entries(dataStatus.data).forEach(([pName, info]) => {
+                            const key = getProjectKey(pName);
+                            const current = PROJECT_ASSEMBLY_STATE[key] || {};
+                            // Only override if not currently running locally to avoid jitter
+                            if (current.status !== 'running' && current.status !== 'queued') {
+                                updateProjectAssemblyState(pName, {
+                                    status: info.status,
+                                    assembly_type: info.assembly_type
+                                });
+                            }
+                        });
+                    }
+                }
+
+                const data = await resDocs.json();
+                if (resDocs.status === 401) return forceRelogin('登录已过期，请重新登录');
                 
-                if (res.status === 401) return forceRelogin('登录已过期，请重新登录');
-                if (res.ok && data.code === 200) {
+                if (resDocs.ok && data.code === 200) {
                     let docs = (data.data && data.data.documents) ? data.data.documents : [];
                     // 过滤掉中间产物（如 json）
                     docs = docs.filter(doc => !String(doc.file_name || doc.title || '').toLowerCase().endsWith('.json'));
@@ -1628,6 +1850,15 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                 const pid = `proj-${idx}`;
                 PROJECT_GROUPS[pid] = { name: project, docs: items };
                 const allChecked = items.every(d => SELECTED_DOCS.has(d.file_path));
+
+                // Button Logic
+                const assemblyState = getProjectAssemblyState(project);
+                const isCompleted = assemblyState && assemblyState.status === 'completed';
+                const btnText = isCompleted ? '重新汇编' : '汇编项目';
+                const btnStyle = isCompleted 
+                    ? 'padding: 7px 18px; font-size: 0.85em; font-weight: 600; min-width:100px; border-radius: 20px; box-shadow:0 4px 12px rgba(245, 158, 11, 0.3); background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; color: white; letter-spacing: 0.5px; transition: all 0.2s;' 
+                    : 'padding: 7px 18px; font-size: 0.85em; font-weight: 600; min-width:100px; border-radius: 20px; box-shadow:0 4px 12px rgba(16,185,129,0.3); background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: white; letter-spacing: 0.5px; transition: all 0.2s;';
+
                 parts.push(`
                     <details class="project-block" data-project="${pid}">
                         <summary class="project-summary">
@@ -1643,8 +1874,9 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                                 <select id="assembly-type-${pid}" class="project-select" onchange="setAssemblyType(this.value)">
                                     <option value="项目档案" ${ASSEMBLY_ACTION === '项目档案' ? 'selected' : ''}>项目档案</option>
                                     <option value="文书档案" ${ASSEMBLY_ACTION === '文书档案' ? 'selected' : ''}>文书档案</option>
+                                    <option value="研究档案" ${ASSEMBLY_ACTION === '研究档案' ? 'selected' : ''}>研究档案</option>
                                 </select>
-                                <button class="btn btn-primary" style="padding: 6px 10px; font-size: 0.9em; width:120px; border-radius: 999px; box-shadow:0 2px 6px rgba(16,185,129,0.2);" onclick="event.stopPropagation(); handleProjectAssembly('${pid}')">汇编本项目</button>
+                                <button id="assembly-btn-${pid}" class="btn btn-primary" style="${btnStyle}" onclick="event.stopPropagation(); handleProjectAssembly('${pid}')">${btnText}</button>
                                 <button class="btn btn-danger-soft" aria-label="删除本项目" title="删除本项目" style="padding: 6px 10px; font-size: 0.9em; width:42px; border-radius: 12px;" onclick="event.stopPropagation(); handleProjectDelete('${pid}')">🗑️</button>
                             </div>
                         </summary>
@@ -1652,6 +1884,8 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                                 <div class="doc-header">
                                     <div></div>
                                     <div>文件名</div>
+                                    <div>状态</div>
+                                    <div>进度</div>
                                     <div>创建时间</div>
                                     <div>操作</div>
                                 </div>
@@ -1659,6 +1893,13 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                                 <div class="doc-row">
                                     <div><input type="checkbox" class="doc-checkbox" data-id="${doc.id}" data-project="${pid}" data-path="${doc.file_path}" ${SELECTED_DOCS.has(doc.file_path) ? 'checked' : ''}></div>
                                     <div class="doc-name">${doc.file_name || doc.title || '未命名'}</div>
+                                    <div class="doc-status" id="doc-status-${doc.id}">${renderFileStatusBadge('waiting')}</div>
+                                    <div class="doc-progress">
+                                        <div class="file-progress-track">
+                                            <div class="file-progress-fill" id="doc-progress-fill-${doc.id}" style="width:0%;"></div>
+                                        </div>
+                                        <div class="file-progress-text" id="doc-progress-text-${doc.id}">0%</div>
+                                    </div>
                                     <div class="doc-time">${doc.created_at ? new Date(doc.created_at).toLocaleString() : '-'}</div>
                                     <div><button class="btn btn-secondary" style="padding:4px 8px; font-size:0.85em;" data-id="${doc.id}" data-pid="${pid}" data-path="${encodeURIComponent(doc.file_path || '')}" onclick="handleDeleteClick(event)">删除</button></div>
                                 </div>
@@ -1674,9 +1915,27 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             container.querySelectorAll('.doc-checkbox').forEach(cb => {
                 cb.addEventListener('change', (e) => toggleDoc(e.target.dataset.project, e.target.dataset.path, e.target.checked));
             });
+
+            // 控制同时展开的抽屉数量（桌面 2 个，小屏 1 个）
+            const maxOpen = () => (window.innerWidth < 1280 ? 1 : 2);
+            const enforceOpenLimit = () => {
+                const openDetails = Array.from(container.querySelectorAll('details.project-block[open]'));
+                if (openDetails.length > maxOpen()) {
+                    // 保留最近展开的，关闭多余的
+                    openDetails.slice(0, openDetails.length - maxOpen()).forEach(d => d.removeAttribute('open'));
+                }
+            };
+            container.querySelectorAll('details.project-block').forEach(det => {
+                det.addEventListener('toggle', () => {
+                    if (det.open) enforceOpenLimit();
+                });
+            });
+            enforceOpenLimit();
             updateProjectCheckboxes();
             renderPagination(totalPages);
             refreshAssemblyStates();
+            // 同步渲染文件级进度（如果已有进行中的 task）
+            Object.values(PROJECT_GROUPS).forEach(group => refreshProjectFileProgress(group.name));
         }
 
         function renderPagination(totalPages) {
@@ -1836,13 +2095,16 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             const existing = getProjectAssemblyState(projectName);
             if (existing?.taskId) stopAssemblyPolling(existing.taskId);
             updateProjectAssemblyState(projectName, {
-                status: 'pending',
+                status: 'queued',
                 progress: 0,
                 error: null,
                 taskId: null,
-                queue_position: -1
+                queue_position: -1,
+                selected_urls: selected,
+                file_progress: {}
             });
             refreshAssemblyUIForProject(projectName);
+            refreshProjectFileProgress(projectName);
 
             try {
                 showToast(`已提交汇编: ${projectName}`, 'info');
@@ -1868,9 +2130,12 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                         progress: data.data.progress ?? 0,
                         taskId,
                         error: null,
-                        queue_position: data.data.queue_position ?? -1
+                        queue_position: data.data.queue_position ?? -1,
+                        selected_urls: selected
                     });
                     refreshAssemblyUIForProject(projectName);
+                    // 先用 waiting 占位，随后由 /task/{id} 拉取 file_progress 填充
+                    refreshProjectFileProgress(projectName);
                     startAssemblyPolling(projectName, taskId);
                 } else if (res.ok && data.code === 200) {
                     updateProjectAssemblyState(projectName, {
@@ -1906,11 +2171,13 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             const existing = getProjectAssemblyState(finalProjectName);
             if (existing?.taskId) stopAssemblyPolling(existing.taskId);
             updateProjectAssemblyState(finalProjectName, {
-                status: 'pending',
+                status: 'queued',
                 progress: 0,
                 error: null,
                 taskId: null,
-                queue_position: -1
+                queue_position: -1,
+                selected_urls: selectedDocs,
+                file_progress: {}
             });
             refreshAssemblyUIForProject(finalProjectName);
 
