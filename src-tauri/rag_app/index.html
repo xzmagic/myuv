@@ -1007,13 +1007,26 @@ body.dark .project-progress .progress-track { background: #1f2937; }
         }
         .search-pagination .btn { padding: 6px 10px; font-size: 0.85em; }
 
-        /* Assembly Result Pretty Print */
-        .json-key { color: #e53e3e; font-weight: bold; }
-        .json-string { color: #38a169; }
-        .json-number { color: #d69e2e; }
-        .json-boolean { color: #3182ce; font-weight: bold; }
-        .json-null { color: #718096; font-weight: bold; }
-    </style>
+	        /* Assembly Result Pretty Print */
+	        .json-key { color: #e53e3e; font-weight: bold; }
+	        .json-string { color: #38a169; }
+	        .json-number { color: #d69e2e; }
+	        .json-boolean { color: #3182ce; font-weight: bold; }
+	        .json-null { color: #718096; font-weight: bold; }
+
+	        /* Auth lock (not logged in) */
+	        body.auth-locked .nav-links .nav-link[data-auth="required"] {
+	            opacity: 0.45;
+	            filter: saturate(0.85);
+	            cursor: not-allowed;
+	        }
+	        body.auth-locked .view-section[data-auth="required"] {
+	            pointer-events: none;
+	            opacity: 0.55;
+	            filter: saturate(0.85);
+	            user-select: none;
+	        }
+	    </style>
 </head>
 <body>
     <!-- Sidebar -->
@@ -1022,32 +1035,32 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             <img src="image.png" alt="logo" style="width:28px; height:28px; border-radius:6px;"> 智能知识库
         </div>
             <ul class="nav-links">
-            <li class="nav-item">
-                <a class="nav-link active" onclick="switchView('home')">
-                    <span class="nav-icon">🏠</span> 首页
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" onclick="switchView('upload')">
-                    <span class="nav-icon">📤</span> 文档上传
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" onclick="switchView('assembly')">
-                    <span class="nav-icon">📚</span> 知识库构建
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" onclick="switchView('search')">
-                    <span class="nav-icon">🔎</span> 智能搜索
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" onclick="switchView('chat')">
-                    <span class="nav-icon">💬</span> 智能问答
-                </a>
-            </li>
-        </ul>
+	            <li class="nav-item">
+	                <a class="nav-link active" onclick="switchView('home')">
+	                    <span class="nav-icon">🏠</span> 首页
+	                </a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" data-auth="required" onclick="switchView('upload')">
+	                    <span class="nav-icon">📤</span> 文档上传
+	                </a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" data-auth="required" onclick="switchView('assembly')">
+	                    <span class="nav-icon">📚</span> 知识库构建
+	                </a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" data-auth="required" onclick="switchView('search')">
+	                    <span class="nav-icon">🔎</span> 智能搜索
+	                </a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" data-auth="required" onclick="switchView('chat')">
+	                    <span class="nav-icon">💬</span> 智能问答
+	                </a>
+	            </li>
+	        </ul>
         <div class="user-profile">
             <div class="user-info" id="current-user-display">未登录</div>
 	            <button class="btn btn-secondary" style="width: 100%; font-size: 0.8em;" onclick="showLoginModal(false)">登录 / 切换账号</button>
@@ -1090,13 +1103,13 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                     <p style="font-size: 0.8em; color: #718096; margin-top: 5px;">修改后将自动刷新页面生效</p>
                 </div>
             </div>
-        </div>
+	        </div>
 
-        <!-- Upload View -->
-        <div id="view-upload" class="view-section">
-            <div class="page-header">
-                <h1 class="page-title">文档上传</h1>
-            </div>
+	        <!-- Upload View -->
+	        <div id="view-upload" class="view-section" data-auth="required">
+	            <div class="page-header">
+	                <h1 class="page-title">文档上传</h1>
+	            </div>
             <div class="card">
                 <form id="upload-form" onsubmit="handleUpload(event)">
                     <div class="form-group">
@@ -1114,13 +1127,13 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                     <button type="submit" class="btn btn-primary">🚀 开始上传</button>
                 </form>
             </div>
-        </div>
+	        </div>
 
-        <!-- Assembly View -->
-        <div id="view-assembly" class="view-section">
-            <div class="page-header" style="display:flex; align-items:center; justify-content:space-between;">
-                <h1 class="page-title">知识库构建 (汇编)</h1>
-            </div>
+	        <!-- Assembly View -->
+	        <div id="view-assembly" class="view-section" data-auth="required">
+	            <div class="page-header" style="display:flex; align-items:center; justify-content:space-between;">
+	                <h1 class="page-title">知识库构建 (汇编)</h1>
+	            </div>
             <div class="card">
                 <div class="form-group">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; justify-content: flex-start;">
@@ -1137,13 +1150,13 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                 <h3>构建结果</h3>
                 <pre id="assembly-result" class="assembly-result"></pre>
             </div>
-        </div>
+	        </div>
 
-        <!-- Smart Search View -->
-        <div id="view-search" class="view-section">
-            <div class="page-header" style="display:flex; flex-direction:column; align-items:flex-start; gap:12px;">
-                <h1 class="page-title">智能搜索</h1>
-                <div class="smart-search-bar">
+	        <!-- Smart Search View -->
+	        <div id="view-search" class="view-section" data-auth="required">
+	            <div class="page-header" style="display:flex; flex-direction:column; align-items:flex-start; gap:12px;">
+	                <h1 class="page-title">智能搜索</h1>
+	                <div class="smart-search-bar">
                     <select id="smart-search-type" title="搜索类型">
                         <option value="1">综合搜索</option>
                         <option value="3">精确搜索</option>
@@ -1164,13 +1177,13 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                     <button class="btn btn-secondary" id="smart-search-next" onclick="smartSearchNext()">下一页</button>
                 </div>
             </div>
-        </div>
+	        </div>
 
-        <!-- Chat View -->
-        <div id="view-chat" class="view-section">
-            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
-                <h1 class="page-title">智能问答 (RAG)</h1>
-                <div style="display:flex; gap:8px;">
+	        <!-- Chat View -->
+	        <div id="view-chat" class="view-section" data-auth="required">
+	            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
+	                <h1 class="page-title">智能问答 (RAG)</h1>
+	                <div style="display:flex; gap:8px;">
                     <button class="btn btn-secondary" style="font-size: 0.8em; padding: 8px 12px;" onclick="toggleHistoryDrawer(true)">
                         📜 历史
                     </button>
@@ -1305,43 +1318,70 @@ body.dark .project-progress .progress-track { background: #1f2937; }
 
 	        let CURRENT_THEME = localStorage.getItem('rag_theme') || 'light';
 
-	        // Initialization
-	        document.addEventListener('DOMContentLoaded', () => {
-	            document.getElementById('api-base-input').value = API_BASE;
-	            // 首次打开客户端：必须显式登录（不再自动生成模拟 token）
-	            if (CURRENT_TOKEN) {
-	                refreshCurrentUser().then((ok) => {
-	                    if (!ok) showLoginModal(true);
-	                    checkHealth();
-	                });
-	            } else {
-	                showLoginModal(true);
-	                checkHealth();
+		        // Initialization
+		        document.addEventListener('DOMContentLoaded', () => {
+		            document.getElementById('api-base-input').value = API_BASE;
+		            // 首次打开客户端：必须显式登录（不再自动生成模拟 token）
+		            if (CURRENT_TOKEN) {
+		                refreshCurrentUser().then((ok) => {
+		                    setAuthLocked(!ok);
+		                    if (!ok) showLoginModal(false);
+		                    checkHealth();
+		                });
+		            } else {
+		                setAuthLocked(true);
+		                showLoginModal(false);
+		                checkHealth();
+		            }
+
+		            applyTheme(CURRENT_THEME);
+		            // 初始欢迎语（不计入历史）
+		            addMessage('你好！我是你的智能助手。请问有什么我可以帮你的吗？您可以询问关于已上传文档的内容。', 'bot', false, '', false);
+		        });
+
+	        // Navigation
+	        function switchView(viewId) {
+	            if (viewId !== 'home' && !requireAuth(false)) {
+	                showToast('请先登录', 'error');
+	                showLoginModal(false);
+	                return;
 	            }
-
-	            applyTheme(CURRENT_THEME);
-	            // 初始欢迎语（不计入历史）
-	            addMessage('你好！我是你的智能助手。请问有什么我可以帮你的吗？您可以询问关于已上传文档的内容。', 'bot', false, '', false);
-	        });
-
-        // Navigation
-        function switchView(viewId) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById('view-' + viewId).classList.add('active');
-            
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+	            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+	            document.getElementById('view-' + viewId).classList.add('active');
+	            
+	            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+	            event.currentTarget.classList.add('active');
 
             if (viewId === 'assembly') loadMyDocuments();
             if (viewId === 'upload') setupDragAndDrop();
-        }
+	        }
 
-	        // Auth Functions
-	        function showLoginModal(force = false) {
-	            const modal = document.getElementById('login-modal');
-	            const cancelBtn = document.getElementById('login-cancel-btn');
-	            if (cancelBtn) cancelBtn.style.display = force ? 'none' : 'block';
-	            modal.style.display = 'flex';
+		        // Auth Functions
+		        function setAuthLocked(locked) {
+		            document.body.classList.toggle('auth-locked', !!locked);
+		            if (locked) {
+		                // Force back to home view when not logged in
+		                document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+		                const home = document.getElementById('view-home');
+		                if (home) home.classList.add('active');
+		                // Update nav active state (fallback: keep first as active)
+		                document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+		                const first = document.querySelector('.nav-links .nav-link');
+		                if (first) first.classList.add('active');
+		            }
+		        }
+
+		        function requireAuth(showModal = true) {
+		            if (CURRENT_TOKEN) return true;
+		            if (showModal) showLoginModal(false);
+		            return false;
+		        }
+
+		        function showLoginModal(force = false) {
+		            const modal = document.getElementById('login-modal');
+		            const cancelBtn = document.getElementById('login-cancel-btn');
+		            if (cancelBtn) cancelBtn.style.display = force ? 'none' : 'block';
+		            modal.style.display = 'flex';
 	            // Prefill username if we have previous info
 	            const u = document.getElementById('login-username');
 	            if (u && !u.value) u.value = (CURRENT_USER && CURRENT_USER.user_name) ? CURRENT_USER.user_name : '';
@@ -1407,7 +1447,8 @@ body.dark .project-progress .progress-track { background: #1f2937; }
 	                localStorage.setItem('jwt_token', CURRENT_TOKEN);
 	                localStorage.setItem('user_info', JSON.stringify(CURRENT_USER));
 
-	                await refreshCurrentUser();
+	                const ok = await refreshCurrentUser();
+	                setAuthLocked(!ok);
 	                hideLoginModal();
 	                showToast('登录成功', 'success');
 	                checkHealth();
@@ -1455,14 +1496,15 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             return headers;
         }
 
-	        function forceRelogin(message = '请重新登录') {
-	            localStorage.removeItem('jwt_token');
-	            localStorage.removeItem('user_info');
-	            CURRENT_TOKEN = null;
-	            CURRENT_USER = null;
-	            showLoginModal(true);
-	            showToast(message, 'error');
-	        }
+		        function forceRelogin(message = '请重新登录') {
+		            localStorage.removeItem('jwt_token');
+		            localStorage.removeItem('user_info');
+		            CURRENT_TOKEN = null;
+		            CURRENT_USER = null;
+		            setAuthLocked(true);
+		            showLoginModal(false);
+		            showToast(message, 'error');
+		        }
 
         function applyTheme(theme) {
             document.body.classList.toggle('dark', theme === 'dark');
@@ -1786,6 +1828,7 @@ body.dark .project-progress .progress-track { background: #1f2937; }
         // Upload
         async function handleUpload(e) {
             e.preventDefault();
+            if (!requireAuth()) return;
             const projectName = document.getElementById('project-name-input').value.trim();
             const fileInput = document.getElementById('file-input');
             if (!projectName) return showToast('请输入项目名称', 'error');
@@ -2150,6 +2193,7 @@ body.dark .project-progress .progress-track { background: #1f2937; }
         }
 
         async function loadMyDocuments() {
+            if (!requireAuth()) return;
             const container = document.getElementById('doc-list-container');
             container.innerHTML = '加载中...';
             SELECTED_DOCS = new Set();
@@ -3169,10 +3213,11 @@ body.dark .project-progress .progress-track { background: #1f2937; }
 	                showToast('请输入关键字', 'error');
 	                return;
 	            }
-	            if (!CURRENT_TOKEN) {
-	                showToast('请先登录', 'error');
-	                return;
-	            }
+		            if (!CURRENT_TOKEN) {
+		                showToast('请先登录', 'error');
+		                showLoginModal(false);
+		                return;
+		            }
 
 	            SMART_SEARCH_STATE.keyword = keyword;
 	            SMART_SEARCH_STATE.type = type;
@@ -3276,11 +3321,12 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             }
         }
 
-	        async function sendMessage() {
-	            if (!CURRENT_TOKEN) {
-	                showLoginModal(true);
-	                return;
-	            }
+		        async function sendMessage() {
+		            if (!CURRENT_TOKEN) {
+		                setAuthLocked(true);
+		                showLoginModal(false);
+		                return;
+		            }
 	            const input = document.getElementById('chat-input');
 	            const text = input.value.trim();
 	            if (!text) return;
