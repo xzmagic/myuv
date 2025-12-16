@@ -422,6 +422,14 @@ body.dark .project-progress .progress-track { background: #1f2937; }
         .btn-secondary:hover {
             background: #cbd5e0;
         }
+        body.dark .btn-secondary {
+            background: #0b1a2e;
+            color: #e5e7eb;
+            border: 1px solid #243447;
+        }
+        body.dark .btn-secondary:hover {
+            background: #0f2542;
+        }
 
         /* Chat Interface */
         .chat-shell {
@@ -489,6 +497,89 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             background: #102541;
             color: #e5e7eb;
             box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .think-panel {
+            margin: 6px 0 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            background: rgba(15, 23, 42, 0.18);
+            overflow: hidden;
+        }
+        body.dark .think-panel {
+            border-color: rgba(59, 130, 246, 0.25);
+            background: rgba(2, 6, 23, 0.35);
+        }
+        .think-panel > summary {
+            padding: 10px 12px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        body.dark .think-panel > summary {
+            color: #60a5fa;
+        }
+        .think-panel > summary::-webkit-details-marker {
+            display: none;
+        }
+        .think-content {
+            margin: 0;
+            padding: 10px 12px 12px;
+            border-top: 1px solid rgba(148, 163, 184, 0.25);
+            white-space: pre-wrap;
+            font-size: 0.92em;
+            color: #0f172a;
+        }
+        body.dark .think-content {
+            border-top-color: rgba(148, 163, 184, 0.25);
+            color: #e5e7eb;
+        }
+
+        .msg-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-start;
+            margin-top: 8px;
+        }
+        .msg-action {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            cursor: pointer;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+        .msg-action:hover {
+            transform: translateY(-1px);
+        }
+        .msg-action:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+        .msg-action svg {
+            width: 8px;
+            height: 8px;
+            color: #fff;
+        }
+        .msg-action.copy {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+        }
+        .msg-action.resend {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            box-shadow: 0 6px 16px rgba(22, 163, 74, 0.25);
+        }
+        body.dark .msg-action.copy,
+        body.dark .msg-action.resend {
+            border-color: rgba(148, 163, 184, 0.2);
         }
 
         .chat-input-area {
@@ -718,6 +809,204 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             color: #60a5fa;
         }
 
+        .source-link {
+            color: #1d4ed8;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            cursor: pointer;
+            overflow-wrap: anywhere;
+        }
+        .source-link:hover { opacity: 0.9; }
+        body.dark .source-link {
+            color: #93c5fd;
+        }
+
+        /* Doc preview drawer */
+        .drawer.doc-drawer {
+            width: min(72vw, 980px);
+            right: -1100px;
+        }
+        .drawer.doc-drawer.open {
+            right: 0;
+        }
+        .doc-drawer-meta {
+            font-size: 0.85em;
+            color: #718096;
+            margin-top: 2px;
+        }
+        body.dark .doc-drawer-meta {
+            color: #94a3b8;
+        }
+        .doc-preview-frame {
+            width: 100%;
+            height: calc(100vh - 120px);
+            border: 0;
+            border-radius: 10px;
+            background: #0b1220;
+        }
+
+        /* Smart search */
+        .smart-search-bar {
+            display: grid;
+            grid-template-columns: 150px minmax(260px, 1fr) 92px;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+            max-width: 980px;
+            margin-top: 2px;
+        }
+        .smart-search-bar select,
+        .smart-search-bar input {
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #fff;
+            color: #1f2937;
+            height: 40px;
+            min-width: 0;
+        }
+        body.dark .smart-search-bar select,
+        body.dark .smart-search-bar input {
+            background: #0c1b2f;
+            border-color: #243447;
+            color: #e5e7eb;
+        }
+        .smart-search-bar .btn {
+            height: 40px;
+            padding: 0 14px;
+            justify-content: center;
+        }
+        @media (min-width: 1200px) {
+            .smart-search-bar {
+                grid-template-columns: 160px minmax(360px, 1fr) 96px;
+            }
+        }
+        @media (max-width: 980px) {
+            .smart-search-bar {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+            .smart-search-bar .btn {
+                width: 100%;
+            }
+        }
+        .smart-search-results {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 120px;
+        }
+        .smart-search-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        }
+        .smart-search-summary {
+            color: #718096;
+            font-size: 0.9em;
+        }
+        body.dark .smart-search-summary {
+            color: #94a3b8;
+        }
+        .smart-search-tip {
+            color: #64748b;
+            font-size: 0.85em;
+        }
+        body.dark .smart-search-tip {
+            color: #94a3b8;
+        }
+        .search-empty {
+            border: 1px dashed rgba(148, 163, 184, 0.35);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            color: #64748b;
+            background: rgba(248, 250, 252, 0.6);
+        }
+        body.dark .search-empty {
+            background: rgba(2, 6, 23, 0.25);
+            border-color: rgba(148, 163, 184, 0.22);
+            color: #94a3b8;
+        }
+        .search-empty-title {
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+        body.dark .search-empty-title {
+            color: #e5e7eb;
+        }
+        .search-res-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            background: #ffffff;
+        }
+        body.dark .search-res-card {
+            background: #0c1b2f;
+            border-color: #243447;
+        }
+        .search-res-title {
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+        body.dark .search-res-title {
+            color: #e5e7eb;
+        }
+        .search-res-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .search-res-title a:hover {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .search-res-body {
+            color: #334155;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        body.dark .search-res-body {
+            color: #cbd5e1;
+        }
+        .search-res-footer {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            font-size: 0.85em;
+            color: #64748b;
+        }
+        body.dark .search-res-footer {
+            color: #94a3b8;
+        }
+        .search-res-tag {
+            background: #e2e8f0;
+            color: #334155;
+            padding: 2px 8px;
+            border-radius: 999px;
+        }
+        body.dark .search-res-tag {
+            background: #0b1a2e;
+            color: #cbd5e1;
+            border: 1px solid #243447;
+        }
+        .search-pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            gap: 10px;
+        }
+        .search-pagination .btn { padding: 6px 10px; font-size: 0.85em; }
+
         /* Assembly Result Pretty Print */
         .json-key { color: #e53e3e; font-weight: bold; }
         .json-string { color: #38a169; }
@@ -749,6 +1038,11 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" onclick="switchView('search')">
+                    <span class="nav-icon">🔎</span> 智能搜索
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" onclick="switchView('chat')">
                     <span class="nav-icon">💬</span> 智能问答
                 </a>
@@ -756,8 +1050,8 @@ body.dark .project-progress .progress-track { background: #1f2937; }
         </ul>
         <div class="user-profile">
             <div class="user-info" id="current-user-display">未登录</div>
-            <button class="btn btn-secondary" style="width: 100%; font-size: 0.8em;" onclick="showLoginModal()">管理员登录</button>
-        </div>
+	            <button class="btn btn-secondary" style="width: 100%; font-size: 0.8em;" onclick="showLoginModal(false)">登录 / 切换账号</button>
+	        </div>
         <div class="sidebar-footer">
             <button class="btn btn-secondary" style="width: 100%; font-size: 0.85em;" onclick="toggleTheme()">
                 <span id="theme-toggle-label-sidebar">🌙 夜间</span>
@@ -845,6 +1139,33 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             </div>
         </div>
 
+        <!-- Smart Search View -->
+        <div id="view-search" class="view-section">
+            <div class="page-header" style="display:flex; flex-direction:column; align-items:flex-start; gap:12px;">
+                <h1 class="page-title">智能搜索</h1>
+                <div class="smart-search-bar">
+                    <select id="smart-search-type" title="搜索类型">
+                        <option value="1">综合搜索</option>
+                        <option value="3">精确搜索</option>
+                    </select>
+                    <input id="smart-search-keyword" type="text" placeholder="请输入关键字" />
+                    <button class="btn btn-primary" onclick="performSmartSearch()">搜索</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="smart-search-head">
+                    <div id="smart-search-summary" class="smart-search-summary"></div>
+                    <div class="smart-search-tip">点击结果标题可在右侧抽屉预览</div>
+                </div>
+                <div id="smart-search-results" class="smart-search-results" style="margin-top: 12px;"></div>
+                <div class="search-pagination" id="smart-search-pagination" style="display:none;">
+                    <button class="btn btn-secondary" id="smart-search-prev" onclick="smartSearchPrev()">上一页</button>
+                    <div id="smart-search-page" style="color:#718096;"></div>
+                    <button class="btn btn-secondary" id="smart-search-next" onclick="smartSearchNext()">下一页</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Chat View -->
         <div id="view-chat" class="view-section">
             <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
@@ -881,22 +1202,40 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             </div>
         </div>
 
+        <!-- Doc Preview Drawer -->
+        <div class="drawer-overlay" id="doc-overlay" onclick="toggleDocDrawer(false)"></div>
+        <div class="drawer doc-drawer" id="doc-drawer">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+                <div>
+                    <h3 id="doc-drawer-title" style="margin:0;">文档预览</h3>
+                    <div id="doc-drawer-meta" class="doc-drawer-meta"></div>
+                </div>
+                <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.85em;" onclick="toggleDocDrawer(false)">关闭</button>
+            </div>
+            <iframe id="doc-preview-iframe" class="doc-preview-frame" title="文档预览"></iframe>
+        </div>
+
     </div>
 
-    <!-- Login Modal -->
-    <div id="login-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
-        <div class="card" style="width: 400px;">
-            <h3 style="margin-bottom: 20px;">切换模拟用户</h3>
-            <div class="form-group">
-                <label>选择用户角色</label>
-                <select id="mock-user-select">
-                    <option value="1">系统管理员 (admin)</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="performLogin()">登录 / 生成Token</button>
-            <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="document.getElementById('login-modal').style.display='none'">取消</button>
-        </div>
-    </div>
+	    <!-- Login Modal -->
+	    <div id="login-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
+	        <div class="card" style="width: 400px;">
+	            <h3 style="margin-bottom: 12px;">登录</h3>
+	            <div style="font-size: 0.85em; color: #718096; line-height: 1.4; margin-bottom: 14px;">
+	                请输入用户名和密码登录。
+	            </div>
+	            <div class="form-group">
+	                <label>用户名</label>
+	                <input id="login-username" type="text" placeholder="例如：admin" autocomplete="username">
+	            </div>
+	            <div class="form-group">
+	                <label>密码</label>
+	                <input id="login-password" type="password" placeholder="请输入密码" autocomplete="current-password" onkeypress="if(event.key === 'Enter') performLogin()">
+	            </div>
+	            <button class="btn btn-primary" style="width: 100%;" onclick="performLogin()">登录</button>
+	            <button id="login-cancel-btn" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="hideLoginModal()">取消</button>
+	        </div>
+	    </div>
 
     <!-- Delete Confirm Modal -->
     <div id="delete-confirm-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
@@ -954,7 +1293,7 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             return sanitizeBase(origin);
         }
 
-        function sanitizeBase(base) {
+	        function sanitizeBase(base) {
             if (!base) return '';
             const trimmed = base.endsWith('/') ? base.slice(0, -1) : base;
             // 防止无协议或非法 scheme 导致 URL 构造报错
@@ -962,33 +1301,28 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                 return 'http://localhost:18888';
             }
             return trimmed;
-        }
+	        }
 
-        // User Configs (Mock)
-        const USER_CONFIGS = {
-            '1': { user_id: 1, user_name: 'admin', nick_name: '系统管理员', dept_id: 100, dept_name: '总公司', roles: ['admin'] },
-            '7': { user_id: 7, user_name: 'dev', nick_name: '开发人员', dept_id: 105, dept_name: '技术部', roles: ['user'] },
-            '2': { user_id: 2, user_name: 'dept_admin', nick_name: '部门管理员', dept_id: 105, dept_name: '技术部', roles: ['deptAdmin', 'user'] }
-        };
-        let CURRENT_THEME = localStorage.getItem('rag_theme') || 'light';
+	        let CURRENT_THEME = localStorage.getItem('rag_theme') || 'light';
 
-        // Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('api-base-input').value = API_BASE;
-            
-            // Auto login as admin if not logged in
-            if (!CURRENT_USER) {
-                // Mock login as admin by default
-                performLogin('1');
-            } else {
-                updateUserDisplay();
-                checkHealth();
-            }
+	        // Initialization
+	        document.addEventListener('DOMContentLoaded', () => {
+	            document.getElementById('api-base-input').value = API_BASE;
+	            // 首次打开客户端：必须显式登录（不再自动生成模拟 token）
+	            if (CURRENT_TOKEN) {
+	                refreshCurrentUser().then((ok) => {
+	                    if (!ok) showLoginModal(true);
+	                    checkHealth();
+	                });
+	            } else {
+	                showLoginModal(true);
+	                checkHealth();
+	            }
 
-            applyTheme(CURRENT_THEME);
-            // 初始欢迎语（不计入历史）
-            addMessage('你好！我是你的智能助手。请问有什么我可以帮你的吗？您可以询问关于已上传文档的内容。', 'bot', false, '', false);
-        });
+	            applyTheme(CURRENT_THEME);
+	            // 初始欢迎语（不计入历史）
+	            addMessage('你好！我是你的智能助手。请问有什么我可以帮你的吗？您可以询问关于已上传文档的内容。', 'bot', false, '', false);
+	        });
 
         // Navigation
         function switchView(viewId) {
@@ -1002,50 +1336,96 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             if (viewId === 'upload') setupDragAndDrop();
         }
 
-        // Auth Functions
-        function showLoginModal() {
-            document.getElementById('login-modal').style.display = 'flex';
-        }
+	        // Auth Functions
+	        function showLoginModal(force = false) {
+	            const modal = document.getElementById('login-modal');
+	            const cancelBtn = document.getElementById('login-cancel-btn');
+	            if (cancelBtn) cancelBtn.style.display = force ? 'none' : 'block';
+	            modal.style.display = 'flex';
+	            // Prefill username if we have previous info
+	            const u = document.getElementById('login-username');
+	            if (u && !u.value) u.value = (CURRENT_USER && CURRENT_USER.user_name) ? CURRENT_USER.user_name : '';
+	            const p = document.getElementById('login-password');
+	            if (p) p.value = '';
+	            setTimeout(() => (u ? u.focus() : null), 50);
+	        }
 
-        async function performLogin(userIdOverride = null) {
-            const userId = userIdOverride || document.getElementById('mock-user-select').value;
-            const userConfig = USER_CONFIGS[userId];
-            
-            try {
-                const tokenData = { ...userConfig, expire_minutes: 120 };
-                const response = await apiFetch('/api/simple-auth/generate-token', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(tokenData)
-                });
+	        function hideLoginModal() {
+	            const modal = document.getElementById('login-modal');
+	            if (modal) modal.style.display = 'none';
+	        }
 
-                if (!response.ok) throw new Error('Login failed');
+	        async function refreshCurrentUser() {
+	            if (!CURRENT_TOKEN) return false;
+	            try {
+	                const infoRes = await apiFetch('/auth/users/me', { headers: getHeaders() });
+	                if (infoRes.status === 401) return false;
+	                const infoData = await infoRes.json().catch(() => null);
+	                if (!infoRes.ok || !infoData || !infoData.user_id) return false;
+	                CURRENT_USER = infoData;
+	                USER_ID = infoData.user_id;
+	                localStorage.setItem('user_info', JSON.stringify(CURRENT_USER));
+	                updateUserDisplay();
+	                return true;
+	            } catch (e) {
+	                return false;
+	            }
+	        }
 
-                const data = await response.json();
-                CURRENT_TOKEN = data.token;
-                CURRENT_USER = data.user_info;
-                CURRENT_USER.user_id = userConfig.user_id; // Ensure user_id is kept
+	        async function performLogin() {
+	            const username = (document.getElementById('login-username')?.value || '').trim();
+	            const password = document.getElementById('login-password')?.value || '';
+	            if (!username) return showToast('请输入用户名', 'error');
+	            if (!password) return showToast('请输入密码', 'error');
 
-                localStorage.setItem('jwt_token', CURRENT_TOKEN);
-                localStorage.setItem('user_info', JSON.stringify(CURRENT_USER));
+	            try {
+	                const body = new URLSearchParams();
+	                body.set('grant_type', 'password');
+	                body.set('username', username);
+	                body.set('password', password);
+	                body.set('scope', '');
 
-                updateUserDisplay();
-                document.getElementById('login-modal').style.display = 'none';
-                showToast('登录成功', 'success');
-                checkHealth();
-            } catch (e) {
-                showToast('登录失败: ' + e.message, 'error');
-            }
-        }
+	                const response = await apiFetch('/auth/token', {
+	                    method: 'POST',
+	                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+	                    body
+	                });
 
-        function updateUserDisplay() {
-            if (CURRENT_USER) {
-                document.getElementById('current-user-display').innerHTML = `
-                    <strong>${CURRENT_USER.nick_name}</strong><br>
-                    ${CURRENT_USER.dept_name}
-                `;
-            }
-        }
+	                if (!response.ok) {
+	                    if (response.status === 401) {
+	                        showToast('登录失败：用户名或密码错误（如首次部署尚未创建账号，请先按 readme.txt 执行初始化 curl）', 'error');
+	                        return;
+	                    }
+	                    const err = await response.text().catch(() => '');
+	                    throw new Error(err || `HTTP ${response.status}`);
+	                }
+
+	                const data = await response.json().catch(() => ({}));
+	                CURRENT_TOKEN = data.access_token;
+	                CURRENT_USER = data.user_info || { user_name: username };
+
+	                localStorage.setItem('jwt_token', CURRENT_TOKEN);
+	                localStorage.setItem('user_info', JSON.stringify(CURRENT_USER));
+
+	                await refreshCurrentUser();
+	                hideLoginModal();
+	                showToast('登录成功', 'success');
+	                checkHealth();
+	            } catch (e) {
+	                showToast('登录失败: ' + e.message, 'error');
+	            }
+	        }
+
+	        function updateUserDisplay() {
+	            if (CURRENT_USER) {
+	                const deptName = CURRENT_USER.dept_name || (CURRENT_USER.dept_id ? `部门ID: ${CURRENT_USER.dept_id}` : '未设置部门');
+	                const nick = CURRENT_USER.nick_name || CURRENT_USER.user_name || '已登录';
+	                document.getElementById('current-user-display').innerHTML = `
+	                    <strong>${nick}</strong><br>
+	                    ${deptName}
+	                `;
+	            }
+	        }
 
         // Utils
         function showToast(message, type = 'info') {
@@ -1075,14 +1455,14 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             return headers;
         }
 
-        function forceRelogin(message = '请重新登录') {
-            localStorage.removeItem('jwt_token');
-            localStorage.removeItem('user_info');
-            CURRENT_TOKEN = null;
-            CURRENT_USER = null;
-            showLoginModal();
-            showToast(message, 'error');
-        }
+	        function forceRelogin(message = '请重新登录') {
+	            localStorage.removeItem('jwt_token');
+	            localStorage.removeItem('user_info');
+	            CURRENT_TOKEN = null;
+	            CURRENT_USER = null;
+	            showLoginModal(true);
+	            showToast(message, 'error');
+	        }
 
         function applyTheme(theme) {
             document.body.classList.toggle('dark', theme === 'dark');
@@ -1220,6 +1600,7 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                 // Initial greeting
                 addMessage('你好！我是你的智能助手。请问有什么我可以帮你的吗？您可以询问关于已上传文档的内容。', 'bot', false, '', false);
                 
+                let lastUserQuestion = '';
                 // Replay session messages
                 sessionData.forEach(msg => {
                     // Map 'assistant' from backend to 'bot' for frontend logic if needed, 
@@ -1235,22 +1616,24 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                     let content = msg.summary; // In loadRemoteHistory we mapped content -> summary
                     
                     // If it's bot, handle think tags
-                    let thinkHtml = '';
                     if (type === 'bot') {
                         const { visible, think } = extractThink(content);
                         content = visible;
-                        if (think) {
-                            const thinkId = 'think-hist-' + msg.id;
-                            thinkHtml = `
-                                <div style="margin-top:8px;">
-                                    <button class="btn btn-secondary think-toggle" onclick="toggleThink('${thinkId}')">展开思考过程</button>
-                                    <div id="${thinkId}" class="think-block" style="display:none;">${think}</div>
-                                </div>
-                            `;
+                        const botId = addMessage(content, type, true, '', true);
+                        const botEl = document.getElementById(botId);
+                        if (botEl) {
+                            if (lastUserQuestion) botEl.dataset.question = lastUserQuestion;
+                            if (think) setThinkPanel(botEl, think, { placeholder: false });
+                            ensureBotActions(botEl);
+                            setBotActionsEnabled(botEl, true);
                         }
+                        return;
                     }
                     
-                    addMessage(content, type, type === 'bot', thinkHtml, true);
+                    if (type === 'user') {
+                        addMessage(content, type, false, '', true);
+                        lastUserQuestion = content;
+                    }
                 });
                 
                 toggleHistoryDrawer(false);
@@ -2298,48 +2681,255 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             }
         }
 
-        async function saveConversation(content, role) {
-            if (!CURRENT_USER || !CURRENT_USER.user_id) return;
+        let CHAT_IS_PROCESSING = false;
+
+        const CHAT_ACTION_ICONS = {
+            clipboard: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.1665 2.91663C1.1665 1.95013 1.95001 1.16663 2.9165 1.16663H7.58317C8.54967 1.16663 9.33317 1.95013 9.33317 2.91663V3.49996C9.33317 3.82213 9.072 4.08329 8.74984 4.08329C8.42767 4.08329 8.1665 3.82213 8.1665 3.49996V2.91663C8.1665 2.59446 7.90534 2.33329 7.58317 2.33329H2.9165C2.59434 2.33329 2.33317 2.59446 2.33317 2.91663V7.58329C2.33317 7.90546 2.59434 8.16663 2.9165 8.16663H3.49984C3.822 8.16663 4.08317 8.42779 4.08317 8.74996C4.08317 9.07213 3.822 9.33329 3.49984 9.33329H2.9165C1.95001 9.33329 1.1665 8.54979 1.1665 7.58329V2.91663ZM4.6665 6.41663C4.6665 5.45013 5.45001 4.66663 6.4165 4.66663H11.0832C12.0497 4.66663 12.8332 5.45013 12.8332 6.41663V11.0833C12.8332 12.0498 12.0497 12.8333 11.0832 12.8333H6.4165C5.45001 12.8333 4.6665 12.0498 4.6665 11.0833V6.41663ZM6.4165 5.83329C6.09434 5.83329 5.83317 6.09446 5.83317 6.41663V11.0833C5.83317 11.4055 6.09434 11.6666 6.4165 11.6666H11.0832C11.4053 11.6666 11.6665 11.4055 11.6665 11.0833V6.41663C11.6665 6.09446 11.4053 5.83329 11.0832 5.83329H6.4165Z" fill="currentColor"></path></svg>`,
+            regenerate: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none"><path d="M8.433.88a.6.6 0 0 1 .846.058L11.2 3.145a.598.598 0 0 1-.102.892L8.86 5.67a.6.6 0 1 1-.707-.969l1.17-.854A6 6 0 0 0 8 3.7a5.18 5.18 0 0 0-5.18 5.18 5.18 5.18 0 1 0 10.36.007.6.6 0 1 1 1.2 0A6.38 6.38 0 1 1 1.62 8.88 6.38 6.38 0 0 1 8 2.5q.59.002 1.124.089l-.75-.862A.6.6 0 0 1 8.433.88" fill="currentColor"></path></svg>`
+        };
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function normalizeSourcePath(fileUrl) {
+            if (!fileUrl) return '';
+            const raw = String(fileUrl).trim();
+            if (!raw) return '';
             try {
-                await apiFetch('/auth/conversations/', {
-                    method: 'POST',
-                    headers: {
-                        ...getHeaders({ 'Content-Type': 'application/json' })
-                    },
-                    body: JSON.stringify({
-                        user_id: CURRENT_USER.user_id,
-                        role: role,
-                        content: content
-                    })
-                });
-            } catch (e) {
-                console.warn('保存对话记录失败', e);
+                const u = new URL(raw);
+                return (u.pathname || '').replace(/^\//, '');
+            } catch (_) {
+                return raw.replace(/^\//, '');
             }
         }
 
-        async function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if (!text) return;
+        function buildFileUrlForPreview(fileUrl) {
+            const path = normalizeSourcePath(fileUrl);
+            if (!path) return '';
+            if (!CURRENT_TOKEN) return '';
+            // 使用 /download 作为统一入口：生产环境通常已放行该路由；
+            // inline=1 便于 iframe 预览，as_pdf=1 便于 Office 文档转换为 PDF（后端支持时生效）。
+            return buildUrl(`/download?url=${encodeURIComponent('/' + path)}&token=${encodeURIComponent(CURRENT_TOKEN)}&inline=1&as_pdf=1`);
+        }
 
-            // Add user message
-            addMessage(text, 'user');
-            saveConversation(text, 'user'); // Save user message
-            input.value = '';
+        function buildPdfJsViewerUrl(fileUrl, pageNum) {
+            const file = buildFileUrlForPreview(fileUrl);
+            if (!file) return '';
+            const pn = Number(pageNum);
+            const viewer = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(file)}`;
+            return Number.isFinite(pn) && pn > 0 ? `${viewer}#page=${pn}` : viewer;
+        }
 
-            // Loading state
-            const loadingId = addMessage('思考中...', 'bot', false, '', false);
+        function toggleDocDrawer(open) {
+            const drawer = document.getElementById('doc-drawer');
+            const overlay = document.getElementById('doc-overlay');
+            if (!drawer || !overlay) return;
+            if (open) {
+                overlay.style.display = 'block';
+                drawer.classList.add('open');
+            } else {
+                overlay.style.display = 'none';
+                drawer.classList.remove('open');
+                const iframe = document.getElementById('doc-preview-iframe');
+                if (iframe) iframe.src = 'about:blank';
+            }
+        }
 
+        function openDocPreview({ label, fileUrl, pageNum }) {
+            const titleEl = document.getElementById('doc-drawer-title');
+            const metaEl = document.getElementById('doc-drawer-meta');
+            const iframe = document.getElementById('doc-preview-iframe');
+            if (!iframe) return;
+
+            const viewerUrl = buildPdfJsViewerUrl(fileUrl, pageNum);
+            if (!viewerUrl) {
+                showToast('无法预览：请先登录或来源缺失', 'error');
+                return;
+            }
+
+            if (titleEl) titleEl.textContent = label || '文档预览';
+            const pn = Number(pageNum);
+            if (metaEl) metaEl.textContent = `${normalizeSourcePath(fileUrl)}${Number.isFinite(pn) && pn > 0 ? ` · 第 ${pn} 页` : ''}`;
+
+            iframe.src = viewerUrl;
+            toggleDocDrawer(true);
+        }
+
+        function renderSourceLinksHtml(refs) {
+            if (!Array.isArray(refs) || refs.length === 0) return '';
+            return `
+                <div class="source-docs">
+                    <div class="source-docs-title">
+                        <span>📚</span> 参考来源
+                    </div>
+                    ${refs.map(r => {
+                        const label = r?.label || '';
+                        const fileUrl = r?.file_url || '';
+                        const pageNum = r?.page_num ?? '';
+                        return `
+                            <div class="source-item">
+                                <span class="source-icon">•</span>
+                                <a href="#" class="source-link" data-file-url="${escapeHtml(fileUrl)}" data-page-num="${escapeHtml(pageNum)}" data-label="${escapeHtml(label)}">${escapeHtml(label)}</a>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function renderSourceTextHtml(docs) {
+            if (!Array.isArray(docs) || docs.length === 0) return '';
+            return `
+                <div class="source-docs">
+                    <div class="source-docs-title">
+                        <span>📚</span> 参考来源
+                    </div>
+                    ${docs.map(s => `
+                        <div class="source-item">
+                            <span class="source-icon">•</span>
+                            <span>${escapeHtml(s)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        async function copyToClipboard(text) {
             try {
-                // Using /explain_query_stream for RAG chat
+                await navigator.clipboard.writeText(text);
+                showToast('已复制到剪贴板');
+            } catch (err) {
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.left = '-9999px';
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    document.execCommand('copy');
+                    textarea.remove();
+                    showToast('已复制到剪贴板');
+                } catch (e) {
+                    console.error('复制失败:', err);
+                    showToast('复制失败', 'error');
+                }
+            }
+        }
+
+        function ensureBotActions(msgDiv) {
+            let actions = msgDiv.querySelector('.msg-actions');
+            if (!actions) {
+                actions = document.createElement('div');
+                actions.className = 'msg-actions';
+                actions.innerHTML = `
+                    <button class="msg-action copy" data-action="copy" type="button" title="复制响应内容" aria-label="复制响应内容">${CHAT_ACTION_ICONS.clipboard}</button>
+                    <button class="msg-action resend" data-action="resend" type="button" title="重新发送同一问题" aria-label="重新发送同一问题">${CHAT_ACTION_ICONS.regenerate}</button>
+                `;
+                msgDiv.appendChild(actions);
+            }
+            const resendBtn = actions.querySelector('button.msg-action.resend');
+            if (resendBtn) {
+                const hasQuestion = !!getAssociatedQuestion(msgDiv);
+                resendBtn.style.display = hasQuestion ? '' : 'none';
+            }
+            return actions;
+        }
+
+        function setBotActionsEnabled(msgDiv, enabled) {
+            const actions = ensureBotActions(msgDiv);
+            actions.querySelectorAll('button.msg-action').forEach(btn => {
+                btn.disabled = !enabled;
+            });
+        }
+
+        function ensureThinkPanel(msgDiv) {
+            let panel = msgDiv.querySelector('details.think-panel');
+            if (!panel) {
+                panel = document.createElement('details');
+                panel.className = 'think-panel';
+                panel.dataset.placeholderThink = '1';
+                panel.innerHTML = `
+                    <summary><span>🧠</span><span>思考过程</span></summary>
+                    <pre class="think-content"></pre>
+                `;
+                msgDiv.insertBefore(panel, msgDiv.firstChild);
+            }
+            return panel;
+        }
+
+        function setThinkPanel(msgDiv, thinkText, { placeholder } = { placeholder: false }) {
+            const panel = ensureThinkPanel(msgDiv);
+            const pre = panel.querySelector('.think-content');
+            if (pre) pre.innerHTML = escapeHtml(thinkText || '');
+            if (placeholder) {
+                panel.dataset.placeholderThink = '1';
+            } else {
+                delete panel.dataset.placeholderThink;
+            }
+        }
+
+        function finalizeThinkPanel(msgDiv, thinkText) {
+            const panel = msgDiv.querySelector('details.think-panel');
+            if (!thinkText && panel?.dataset?.placeholderThink === '1') {
+                panel.remove();
+                return;
+            }
+            if (thinkText) {
+                setThinkPanel(msgDiv, thinkText, { placeholder: false });
+            }
+        }
+
+        function getAssociatedQuestion(msgDiv) {
+            const direct = msgDiv?.dataset?.question;
+            if (direct) return direct;
+            let prev = msgDiv?.previousElementSibling;
+            while (prev) {
+                if (prev.classList?.contains('message') && prev.classList?.contains('user')) {
+                    return prev.textContent.trim();
+                }
+                prev = prev.previousElementSibling;
+            }
+            return '';
+        }
+
+        async function resendMessage(botMessageId) {
+            if (CHAT_IS_PROCESSING) return;
+            const msgDiv = document.getElementById(botMessageId);
+            if (!msgDiv) return;
+            const question = getAssociatedQuestion(msgDiv);
+            if (!question) {
+                showToast('未找到关联问题，无法重发', 'error');
+                return;
+            }
+            await runRagStream(question, msgDiv);
+        }
+
+        async function runRagStream(question, msgDiv) {
+            CHAT_IS_PROCESSING = true;
+            try {
+                msgDiv.dataset.question = question;
+                msgDiv.dataset.answer = '';
+                msgDiv.innerHTML = '<div class="markdown-content answer-content">思考中...</div><div class="sources-content"></div>';
+                setThinkPanel(msgDiv, '', { placeholder: true });
+                setBotActionsEnabled(msgDiv, false);
+                const answerDiv = msgDiv.querySelector('.answer-content');
+                const sourcesDiv = msgDiv.querySelector('.sources-content');
+
                 const response = await apiFetch('/explain_query_stream', {
                     method: 'POST',
                     headers: {
                         ...getHeaders({ 'Content-Type': 'application/json' })
                     },
                     body: JSON.stringify({
-                        question: text,
-                        prompt: "自定义汇编", 
+                        question,
+                        prompt: "自定义汇编",
                         promptName: "自定义汇编"
                     })
                 });
@@ -2356,53 +2946,38 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                     } catch (_) {}
                     throw new Error(errMsg);
                 }
-                
-                // Clear loading message content
-                const msgDiv = document.getElementById(loadingId);
-                msgDiv.innerHTML = '<div class="markdown-content"></div>';
-                const contentDiv = msgDiv.querySelector('.markdown-content');
-                
+
                 // Setup stream reader
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let buffer = '';
                 let accumulatedText = '';
                 let sourceHtml = '';
-                
+
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
-                    
+
                     buffer += decoder.decode(value, { stream: true });
                     const lines = buffer.split('\n');
-                    buffer = lines.pop(); // Keep last partial line
-                    
+                    buffer = lines.pop();
+
                     for (const line of lines) {
                         if (!line.trim()) continue;
                         try {
-                            const data = JSON.parse(line);
-                            if (data.type === 'source') {
-                                const docs = data.data || [];
-                                if (docs.length > 0) {
-                                     sourceHtml = `
-                                        <div class="source-docs">
-                                            <div class="source-docs-title">
-                                                <span>📚</span> 参考来源
-                                            </div>
-                                            ${docs.map(s => `
-                                                <div class="source-item">
-                                                    <span class="source-icon">•</span>
-                                                    <span>${s}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    `;
-                                }
-                            } else if (data.type === 'content') {
-                                accumulatedText += data.data;
-                                contentDiv.innerHTML = SimpleMarkdown.parse(accumulatedText);
-                                
-                                // Scroll to bottom
+	                            const data = JSON.parse(line);
+	                            if (data.type === 'source') {
+	                                const refs = data.refs || [];
+	                                const docs = data.data || [];
+	                                sourceHtml = refs.length ? renderSourceLinksHtml(refs) : renderSourceTextHtml(docs);
+	                                if (sourcesDiv) sourcesDiv.innerHTML = sourceHtml;
+	                            } else if (data.type === 'content') {
+	                                accumulatedText += data.data;
+	                                const { visible, think } = extractThink(accumulatedText);
+	                                msgDiv.dataset.answer = visible;
+                                if (answerDiv) answerDiv.innerHTML = SimpleMarkdown.parse(visible || '');
+                                if (think) setThinkPanel(msgDiv, think, { placeholder: false });
+
                                 const container = document.getElementById('chat-messages');
                                 container.scrollTop = container.scrollHeight;
                             } else if (data.type === 'error') {
@@ -2413,37 +2988,324 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                         }
                     }
                 }
-                
+
                 // Final render (clean up think tags and sources)
                 const { visible, think } = extractThink(accumulatedText);
-                let finalThinkHtml = '';
-                if (think) {
-                     const thinkId = 'think-' + Date.now();
-                     finalThinkHtml = `
-                        <div style="margin-top:8px;">
-                            <button class="btn btn-secondary think-toggle" onclick="toggleThink('${thinkId}')">展开思考过程</button>
-                            <div id="${thinkId}" class="think-block" style="display:none;">${think}</div>
-                        </div>
-                    `;
-                }
-                
-                msgDiv.innerHTML = `
-                    <div class="markdown-content">${SimpleMarkdown.parse(visible)}</div>
-                    ${sourceHtml}
-                    ${finalThinkHtml}
-                `;
-                
-                // Save bot response
-                saveConversation(visible, 'assistant');
-                
-                // Track in history
-                CHAT_HISTORY.push({
-                    role: 'assistant',
-                    content: visible
-                });
+                msgDiv.dataset.answer = visible;
 
+                if (answerDiv) answerDiv.innerHTML = SimpleMarkdown.parse(visible || '');
+                if (sourcesDiv) sourcesDiv.innerHTML = sourceHtml || '';
+                finalizeThinkPanel(msgDiv, think);
+                ensureBotActions(msgDiv);
+                setBotActionsEnabled(msgDiv, true);
+
+                saveConversation(visible, 'assistant');
+                CHAT_HISTORY.push({ role: 'assistant', content: visible });
             } catch (e) {
-                document.getElementById(loadingId).textContent = '发生错误: ' + e.message;
+                msgDiv.textContent = '发生错误: ' + e.message;
+            } finally {
+                CHAT_IS_PROCESSING = false;
+            }
+        }
+
+	        function bindChatActionHandlers() {
+	            const container = document.getElementById('chat-messages');
+	            if (!container) return;
+	            container.addEventListener('click', async (e) => {
+	                const link = e.target.closest('a.source-link');
+	                if (link) {
+	                    e.preventDefault();
+	                    const fileUrl = link.dataset.fileUrl || '';
+	                    const pageNum = link.dataset.pageNum || '';
+	                    const label = link.dataset.label || link.textContent || '文档预览';
+	                    openDocPreview({ label, fileUrl, pageNum });
+	                    return;
+	                }
+
+	                const btn = e.target.closest('button.msg-action');
+	                if (!btn) return;
+	                const msgDiv = btn.closest('.message.bot');
+	                if (!msgDiv) return;
+
+                const action = btn.dataset.action;
+                if (action === 'copy') {
+                    const text = msgDiv.querySelector('.answer-content')?.innerText
+                        || msgDiv.querySelector('.markdown-content')?.innerText
+                        || msgDiv.dataset.answer
+                        || '';
+                    if (!text.trim()) {
+                        showToast('暂无可复制内容', 'error');
+                        return;
+                    }
+                    await copyToClipboard(text);
+                } else if (action === 'resend') {
+                    await resendMessage(msgDiv.id);
+                }
+	            });
+	        }
+
+	        const SMART_SEARCH_STATE = {
+	            keyword: '',
+	            type: '1',
+	            pageNum: 1,
+	            pageSize: 10,
+	            total: 0,
+	            hits: [],
+	            loading: false
+	        };
+
+	        function renderSmartSearchEmpty(message, sub = '支持综合/精确搜索') {
+	            return `
+	                <div class="search-empty">
+	                    <div class="search-empty-title">${escapeHtml(message)}</div>
+	                    <div>${escapeHtml(sub)}</div>
+	                </div>
+	            `;
+	        }
+
+	        function getFilenameFromPath(p) {
+	            const clean = normalizeSourcePath(p);
+	            if (!clean) return '';
+	            const parts = clean.split('/');
+	            return parts[parts.length - 1] || clean;
+	        }
+
+	        function buildSmartSearchQuery(type, keyword) {
+	            if (type === '1') {
+	                return {
+	                    bool: {
+	                        should: [
+	                            { match: { 'project_name.text': keyword } },
+	                            { match: { content: keyword } }
+	                        ],
+	                        minimum_should_match: 1
+	                    }
+	                };
+	            }
+	            // "精确搜索"：尽量使用短语匹配，避免噪声
+	            return {
+	                bool: {
+	                    should: [
+	                        { match_phrase: { 'project_name.text': keyword } },
+	                        { match_phrase: { content: keyword } }
+	                    ],
+	                    minimum_should_match: 1
+	                }
+	            };
+	        }
+
+	        function updateSmartSearchUI() {
+	            const summary = document.getElementById('smart-search-summary');
+	            const resultsEl = document.getElementById('smart-search-results');
+	            const pager = document.getElementById('smart-search-pagination');
+	            const pageEl = document.getElementById('smart-search-page');
+	            const prevBtn = document.getElementById('smart-search-prev');
+	            const nextBtn = document.getElementById('smart-search-next');
+
+	            if (!summary || !resultsEl || !pager || !pageEl || !prevBtn || !nextBtn) return;
+
+	            const total = SMART_SEARCH_STATE.total || 0;
+	            const pageNum = SMART_SEARCH_STATE.pageNum || 1;
+	            const pageSize = SMART_SEARCH_STATE.pageSize || 10;
+	            const pageCount = Math.max(1, Math.ceil(total / pageSize));
+
+	            if (!SMART_SEARCH_STATE.keyword) {
+	                summary.textContent = '';
+	                resultsEl.innerHTML = renderSmartSearchEmpty('请输入关键字开始搜索', '输入关键字后点击“搜索”，支持点击标题预览');
+	                pager.style.display = 'none';
+	                return;
+	            }
+
+	            summary.textContent = SMART_SEARCH_STATE.loading
+	                ? '搜索中...'
+	                : `本次共检索出 ${total} 条结果`;
+
+	            if (SMART_SEARCH_STATE.loading && !SMART_SEARCH_STATE.hits.length) {
+	                resultsEl.innerHTML = renderSmartSearchEmpty('搜索中...', '请稍候');
+	            } else if (!SMART_SEARCH_STATE.hits.length && !SMART_SEARCH_STATE.loading) {
+	                resultsEl.innerHTML = renderSmartSearchEmpty('无搜索结果', '可尝试更换关键词或使用“精确搜索”');
+	            } else if (SMART_SEARCH_STATE.hits.length) {
+	                resultsEl.innerHTML = SMART_SEARCH_STATE.hits.map(hit => {
+	                    const src = hit?._source || {};
+	                    const titleHtml = hit?.highlight?.['project_name.text']?.[0] || escapeHtml(src.project_name || getFilenameFromPath(src.source || ''));
+	                    const bodyHtml = hit?.highlight?.content?.[0] || escapeHtml(src.content || '');
+	                    const year = escapeHtml(src.year ?? '');
+	                    const action = escapeHtml(src.action ?? '');
+	                    const pageNum = src.page_num ?? '';
+	                    const fileUrl = src.source || '';
+	                    const label = src.project_name || getFilenameFromPath(fileUrl);
+	                    const docTypes = Array.isArray(src?.metadata?.doc_type) ? src.metadata.doc_type : [];
+
+	                    return `
+	                        <div class="search-res-card">
+	                            <div class="search-res-title">
+	                                <a href="#" class="doc-preview-link" data-file-url="${escapeHtml(fileUrl)}" data-page-num="${escapeHtml(pageNum)}" data-label="${escapeHtml(label)}">${titleHtml}</a>
+	                            </div>
+	                            <div class="search-res-body">${bodyHtml}</div>
+	                            <div class="search-res-footer">
+	                                ${year ? `<span>${year}</span>` : ''}
+	                                ${action ? `<span class="search-res-tag">${action}</span>` : ''}
+	                                ${docTypes.map(t => `<span class="search-res-tag">${escapeHtml(t)}</span>`).join('')}
+	                            </div>
+	                        </div>
+	                    `;
+	                }).join('');
+	            }
+
+	            pager.style.display = total > 0 ? 'flex' : 'none';
+	            pageEl.textContent = `第 ${pageNum} / ${pageCount} 页`;
+	            prevBtn.disabled = pageNum <= 1 || SMART_SEARCH_STATE.loading;
+	            nextBtn.disabled = pageNum >= pageCount || SMART_SEARCH_STATE.loading;
+	        }
+
+	        async function performSmartSearch(page = 1) {
+	            const input = document.getElementById('smart-search-keyword');
+	            const typeSel = document.getElementById('smart-search-type');
+	            if (!input || !typeSel) return;
+
+	            const keyword = input.value.trim();
+	            const type = typeSel.value || '1';
+	            if (!keyword) {
+	                showToast('请输入关键字', 'error');
+	                return;
+	            }
+	            if (!CURRENT_TOKEN) {
+	                showToast('请先登录', 'error');
+	                return;
+	            }
+
+	            SMART_SEARCH_STATE.keyword = keyword;
+	            SMART_SEARCH_STATE.type = type;
+	            SMART_SEARCH_STATE.pageNum = Math.max(1, Number(page) || 1);
+	            SMART_SEARCH_STATE.loading = true;
+	            updateSmartSearchUI();
+
+	            try {
+	                const query = buildSmartSearchQuery(type, keyword);
+	                const from = (SMART_SEARCH_STATE.pageNum - 1) * SMART_SEARCH_STATE.pageSize;
+
+	                const res = await apiFetch('/api/search/docs', {
+	                    method: 'POST',
+	                    headers: {
+	                        ...getHeaders({ 'Content-Type': 'application/json' })
+	                    },
+	                    body: JSON.stringify({
+	                        query,
+	                        highlight: {
+	                            fields: {
+	                                'project_name.text': {},
+	                                content: {}
+	                            }
+	                        },
+	                        _source: { excludes: ['embedding'] },
+	                        from,
+	                        size: SMART_SEARCH_STATE.pageSize
+	                    })
+	                });
+
+	                if (res.status === 401) {
+	                    forceRelogin('登录已过期，请重新登录');
+	                    return;
+	                }
+	                if (!res.ok) {
+	                    const errText = await res.text().catch(() => '');
+	                    throw new Error(errText || `HTTP ${res.status}`);
+	                }
+
+	                const data = await res.json().catch(() => ({}));
+	                SMART_SEARCH_STATE.hits = data?.hits?.hits || [];
+	                SMART_SEARCH_STATE.total = data?.hits?.total?.value ?? 0;
+	            } catch (e) {
+	                console.error(e);
+	                showToast('搜索失败: ' + (e?.message || String(e)), 'error');
+	                SMART_SEARCH_STATE.hits = [];
+	                SMART_SEARCH_STATE.total = 0;
+	            } finally {
+	                SMART_SEARCH_STATE.loading = false;
+	                updateSmartSearchUI();
+	            }
+	        }
+
+	        function smartSearchPrev() {
+	            performSmartSearch(Math.max(1, (SMART_SEARCH_STATE.pageNum || 1) - 1));
+	        }
+	        function smartSearchNext() {
+	            const total = SMART_SEARCH_STATE.total || 0;
+	            const pageCount = Math.max(1, Math.ceil(total / (SMART_SEARCH_STATE.pageSize || 10)));
+	            performSmartSearch(Math.min(pageCount, (SMART_SEARCH_STATE.pageNum || 1) + 1));
+	        }
+
+	        function bindSmartSearchHandlers() {
+	            const input = document.getElementById('smart-search-keyword');
+	            const resultsEl = document.getElementById('smart-search-results');
+	            if (input) {
+	                input.addEventListener('keydown', (e) => {
+	                    if (e.key === 'Enter') performSmartSearch(1);
+	                });
+	            }
+	            if (resultsEl) {
+	                resultsEl.addEventListener('click', (e) => {
+	                    const link = e.target.closest('a.doc-preview-link');
+	                    if (!link) return;
+	                    e.preventDefault();
+	                    openDocPreview({
+	                        label: link.dataset.label || link.textContent || '文档预览',
+	                        fileUrl: link.dataset.fileUrl || '',
+	                        pageNum: link.dataset.pageNum || ''
+	                    });
+	                });
+	            }
+	        }
+
+	        async function saveConversation(content, role) {
+	            if (!CURRENT_USER || !CURRENT_USER.user_id) return;
+	            try {
+                await apiFetch('/auth/conversations/', {
+                    method: 'POST',
+                    headers: {
+                        ...getHeaders({ 'Content-Type': 'application/json' })
+                    },
+                    body: JSON.stringify({
+                        user_id: CURRENT_USER.user_id,
+                        role: role,
+                        content: content
+                    })
+                });
+            } catch (e) {
+                console.warn('保存对话记录失败', e);
+            }
+        }
+
+	        async function sendMessage() {
+	            if (!CURRENT_TOKEN) {
+	                showLoginModal(true);
+	                return;
+	            }
+	            const input = document.getElementById('chat-input');
+	            const text = input.value.trim();
+	            if (!text) return;
+
+            // Add user message
+            addMessage(text, 'user');
+            saveConversation(text, 'user'); // Save user message
+            input.value = '';
+
+            try {
+                if (CHAT_IS_PROCESSING) return;
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message bot';
+                msgDiv.id = nextMsgId();
+                msgDiv.dataset.question = text;
+                msgDiv.innerHTML = '<div class="markdown-content answer-content">思考中...</div><div class="sources-content"></div>';
+                setThinkPanel(msgDiv, '', { placeholder: true });
+                ensureBotActions(msgDiv);
+                setBotActionsEnabled(msgDiv, false);
+                document.getElementById('chat-messages').appendChild(msgDiv);
+                document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+
+                await runRagStream(text, msgDiv);
+            } catch (e) {
+                showToast('发送失败: ' + e.message, 'error');
             }
         }
 
@@ -2458,6 +3320,14 @@ body.dark .project-progress .progress-track { background: #1f2937; }
                 <div class="${isMarkdown ? 'markdown-content' : ''}">${contentHtml}</div>
                 ${appendHtml}
             `;
+
+            // 仅对“可操作的机器人回复”展示复制/重发按钮；
+            // 初始欢迎语等不计入历史的系统提示不展示按钮（track=false）。
+            if (type === 'bot' && track) {
+                msgDiv.dataset.answer = typeof text === 'string' ? text : '';
+                ensureBotActions(msgDiv);
+                setBotActionsEnabled(msgDiv, true);
+            }
             
             container.appendChild(msgDiv);
             container.scrollTop = container.scrollHeight;
@@ -2470,6 +3340,12 @@ body.dark .project-progress .progress-track { background: #1f2937; }
             }
             return msgDiv.id;
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            bindChatActionHandlers();
+            bindSmartSearchHandlers();
+            updateSmartSearchUI();
+        });
 
     </script>
 </body>
